@@ -4,7 +4,7 @@ function Footer() {
     return (
         <footer style={styles.footer}>
             <p>James Hunt © 2024</p>
-            <p>Email: james.hunt@duke.edu</p>
+            <p>Email: james.hunt940@icloud.com</p>
         </footer>
     );
 }
