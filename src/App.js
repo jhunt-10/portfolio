@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import AlgorithmicTrading from './pages/AlgorithmicTrading';
 
 function App() {
   return (
