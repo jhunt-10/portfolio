@@ -13,6 +13,7 @@ function Header() {
                     <li className="navItem">
                         <Link to="/about" className="navLink">About</Link>
                     </li>
+                    <li><Link to="/algorithmic-trading">Algorithmic Trading</Link></li>
                     {/* Add more navigation links as needed */}
                 </ul>
             </nav>
