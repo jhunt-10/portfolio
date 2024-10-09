@@ -4,6 +4,7 @@ import About from './pages/About';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import AlgorithmicTrading from './pages/AlgorithmicTrading';
+import AlgoTrading from './pages/AlgoTrading';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/algorithmic-trading" element={<AlgorithmicTrading />} />
+        <Route path="/algorithmic-trading-2" element={<AlgoTrading />} />
       </Routes>
       <Footer />
     </Router>
