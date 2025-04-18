@@ -13,8 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/algorithmic-trading" element={<AlgorithmicTrading />} />
-        <Route path="/algorithmic-trading-2" element={<AlgoTrading />} />
+        {/* <Route path="/algorithmic-trading" element={<AlgorithmicTrading />} />
+        <Route path="/algorithmic-trading-2" element={<AlgoTrading />} /> */}
       </Routes>
       <Footer />
     </Router>

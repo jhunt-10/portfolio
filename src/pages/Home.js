@@ -4,7 +4,7 @@ function Home() {
     return (
         <div>
             <h1>Welcome to My Portfolio</h1>
-            <p>I'm James Hunt, a third year student currently at Duke University.</p>
+            <p>My name is James Hunt, not much to see yet...</p>
         </div>
     );
 }
