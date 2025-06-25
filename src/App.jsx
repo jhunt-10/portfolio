@@ -1,35 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useRef, useState } from 'react'
+import { useInView } from 'framer-motion';
+
+import Navbar from './components/Navbar';
+import FloatingButton from './components/FloatingButton';
+import Home from './pages/Home';
+import About from './pages/About';
+import Projects from './pages/Projects';
+import Contact from './pages/Contact';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [activeSection, setActiveSection] = useState('home');
+
+
+  const homeRef = useRef(null);
+  const aboutRef = useRef(null);
+  const projectsRef = useRef(null);
+  const contactRef = useRef(null);
+
+  const isHomeInView = useInView(homeRef, { amount: 0.5});
+  const isAboutInView = useInView(aboutRef, { amount: 0.5});
+  const isProjectsInView = useInView(projectsRef, { amount: 0.5});
+  const isContactInView = useInView(contactRef, { amount: 0.5 }); 
+
+  useEffect(() => {
+    if (isContactInView) {
+      setActiveSection('contact');
+  } else if (isProjectsInView) {
+      setActiveSection('projects');
+    } else if (isAboutInView) {
+      setActiveSection('about');
+    } else if (isHomeInView) {
+      setActiveSection('home');
+    }
+  }, [isHomeInView, isAboutInView, isProjectsInView, isContactInView]);
+
+  const sections = {
+    home: homeRef,
+    about: aboutRef,
+    projects: projectsRef,
+    contact: contactRef,
+  };
+
+  const handleNavClick = (sectionId) => {
+    const ref = sections[sectionId];
+    if (ref && ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="font-sans">
+      <Navbar onNavClick={handleNavClick} activeSection={activeSection} />
+      
+      <FloatingButton 
+        visible={!isContactInView} 
+        onClick={() => handleNavClick('contact')} 
+      />
+
+      <main>
+        <Home ref={homeRef} />
+        <About ref={aboutRef} />
+        <Projects ref={projectsRef} />
+        <Contact ref={contactRef} />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
