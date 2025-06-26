@@ -10,6 +10,8 @@ import Contact from './pages/Contact';
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
+  const [globalMouseX, setGlobalMouseX] = useState(0);
+  const [globalMouseY, setGlobalMouseY] = useState(0);
 
 
   const homeRef = useRef(null);
@@ -21,6 +23,19 @@ function App() {
   const isAboutInView = useInView(aboutRef, { amount: 0.5});
   const isProjectsInView = useInView(projectsRef, { amount: 0.5});
   const isContactInView = useInView(contactRef, { amount: 0.5 }); 
+
+  useEffect(() => {
+      const handleGlobalMouseMove = (event) => {
+        setGlobalMouseX(event.clientX);
+        setGlobalMouseY(event.clientY)
+      };
+
+      window.addEventListener('mousemove', handleGlobalMouseMove);
+
+      return () => {
+        window.removeEventListener('mousemove', handleGlobalMouseMove);
+      };
+    }, []); 
 
   useEffect(() => {
     if (isContactInView) {
@@ -58,7 +73,7 @@ function App() {
       />
 
       <main>
-        <Home ref={homeRef} />
+        <Home ref={homeRef}  globalMouseX={globalMouseX} globalMouseY={globalMouseY}/>
         <About ref={aboutRef} />
         <Projects ref={projectsRef} />
         <Contact ref={contactRef} />
