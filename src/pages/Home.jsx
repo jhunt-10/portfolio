@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const Home = React.forwardRef(({globalMouseX, globalMouseY}, ref) => {
   // State to manage the horizontal translation (offset) for "James" and "Hunt"
@@ -41,12 +42,46 @@ const Home = React.forwardRef(({globalMouseX, globalMouseY}, ref) => {
     }
   }, [globalMouseX, globalMouseY, ref]); // Empty dependency array ensures this effect runs only once after initial render
 
+  const welcomeText = "Welcome to my Portfolio";
+
+  const typingCharacterDelay = 0.05; // Base delay between characters in seconds
+  const spaceExtraDelay = 0.1; // Extra delay for spaces in seconds
+
+  // We'll calculate the cumulative delay for each character
+  let cumulativeDelay = 0;
+  const charactersWithDelays = welcomeText.split("").map((char, index) => {
+    const charDelay = typingCharacterDelay;
+    const currentCharacterDelay = cumulativeDelay;
+
+    if (char === ' ') {
+      cumulativeDelay += charDelay + spaceExtraDelay;
+    } else {
+      cumulativeDelay += charDelay;
+    }
+
+    return {
+      char: char,
+      delay: currentCharacterDelay,
+    };
+  });
+
+  const characterVariants = {
+    hidden: { opacity: 0 },
+    visible: (custom) => ({ // Use custom prop for individual delay
+      opacity: 1,
+      transition: {
+        delay: custom.delay + 1.0, // Add the overall animation start delay here
+        duration: 0.01, // Quick appearance
+      },
+    }),
+  };
+
   return (
     <section
       ref={ref} // This ref is forwarded from the parent component, allowing external access if needed.
       id="home"
-      className="min-h-screen flex items-center justify-center bg-gray-100 overflow-hidden relative"
-      style={{ perspective: '100px' }}
+      className="min-h-screen flex items-center justify-center bg-gray-100 overflow-hidden relative cursor-ew-resize select-none"
+      style={{ perspective: '1000px' }}
     >
       
         <div
@@ -64,15 +99,10 @@ const Home = React.forwardRef(({globalMouseX, globalMouseY}, ref) => {
       ></div>
       
       <div
-        className="relative text-center w-full h-full flex flex-col items-center justify-center cursor-ew-resize select-none"
-        // `cursor-ew-resize` provides a visual cue that horizontal dragging is possible.
-        // `select-none` prevents text from being accidentally selected while moving the mouse.
-        // `perspective` is a good practice for elements undergoing 3D transforms, even for 2D translateX,
-        // as it sets up a 3D rendering context for potential future effects.
-        style={{ perspective: '1000px' }}
+        className="relative text-center w-full h-full flex flex-col items-center justify-center z-10"
       >
         <h1
-          className="text-[11rem] md:text-[15rem] font-extrabold text-slate-800 relative z-10 will-change-transform pointer-events-none"
+          className="text-[11rem] md:text-[15rem] font-extrabold text-slate-800 relative will-change-transform pointer-events-none -mt-[8rem]"
           // `will-change-transform` hints to the browser that this element's transform property
           // will change, allowing for potential performance optimizations.
           // `pointer-events-none` ensures that mouse events pass through this element to the
@@ -84,13 +114,31 @@ const Home = React.forwardRef(({globalMouseX, globalMouseY}, ref) => {
 
         {/* "Hunt" text element, positioned below "James". */}
         <h1
-          className="text-[11rem] md:text-[15rem] font-extrabold text-slate-800 relative z-10 will-change-transform pointer-events-none -mt-[5rem] md:-mt-[10rem]"
+          className="text-[11rem] md:text-[15rem] font-extrabold text-slate-800 z-10 will-change-transform pointer-events-none -mt-[5rem] md:-mt-[10rem]"
           // Negative margin-top (`-mt-8 md:-mt-12`) is used to pull "Hunt" upwards,
           // reducing the vertical gap between "James" and "Hunt" and making them appear closer.
           style={{ transform: `translateX(${huntOffset}px)` }} // Apply the dynamic horizontal translation
         >
           Hunt
         </h1>
+
+        <motion.h2
+          className="text-3xl md:text-5xl font-light text-slate-600 font-mono"
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Map through the charactersWithDelays array */}
+          {charactersWithDelays.map((item, index) => (
+            <motion.span
+              key={index}
+              variants={characterVariants}
+              custom={item} // Pass the custom delay for each character
+            >
+              {item.char === " " ? "\u00A0" : item.char} {/* Render space character correctly */}
+            </motion.span>
+          ))}
+        </motion.h2>
+
       </div>
     </section>
   );

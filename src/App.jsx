@@ -74,7 +74,7 @@ function App() {
 
       <main>
         <Home ref={homeRef}  globalMouseX={globalMouseX} globalMouseY={globalMouseY}/>
-        <About ref={aboutRef} />
+        <About ref={aboutRef} globalMouseX={globalMouseX} globalMouseY={globalMouseY}/>
         <Projects ref={projectsRef} />
         <Contact ref={contactRef} />
       </main>
